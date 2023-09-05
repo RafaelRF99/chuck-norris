@@ -6,11 +6,16 @@ import { useQuery } from 'react-query'
 import axios from 'axios'
 
 export default function App() {
-    const { data } = useQuery<IChuckNorris>('Chuck Norris', async () => {
-        const res = await axios.get('https://api.chucknorris.io/jokes/random')
+    const { data, isFetching } = useQuery<IChuckNorris>(
+        'Chuck Norris',
+        async () => {
+            const res = await axios.get(
+                'https://api.chucknorris.io/jokes/random',
+            )
 
-        return res.data
-    })
+            return res.data
+        },
+    )
 
     return (
         <div className={styles.container}>
@@ -23,7 +28,11 @@ export default function App() {
             </a>
             <div>
                 <div>
-                    <p className={styles.speak}>{data?.value}</p>
+                    <p className={styles.speak}>
+                        {isFetching
+                            ? "Don't look too hard, it can blind you."
+                            : data?.value}
+                    </p>
                     <p>Criado em: {data?.created_at}</p>
                     <p>Ultima atualização: {data?.updated_at}</p>
                 </div>
